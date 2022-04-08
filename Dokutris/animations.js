@@ -15,7 +15,7 @@ class animationHolder {
 		}
 		
 		for (let i=0; i<this.animArray.length; i++) {
-			if (this.animArray[i].render() != 1) { // If done
+			if (this.animArray[i].render() != 1) { // If done running
 				this.animArray.splice(i,1);
 			}
 		}
@@ -36,7 +36,7 @@ class Anim {
 	update() {
 		this.renderFrame++;
 		this.animRatio = this.renderFrame / this.animDuration;
-		this.done = (this.renderFrame < this.animDuration);
+		this.running = (this.renderFrame < this.animDuration);
 	}
 	
 }
@@ -80,7 +80,7 @@ class scoreAnim extends Anim {
 		text(this.message,this.x,this.y);
 		
 		this.update();
-		return this.done;
+		return this.running;
 	}
 	
 	lookupOpacity() {
@@ -106,10 +106,10 @@ class unCover extends Anim {
 		rect(0,0,canvasLength*4/3, canvasLength);
 		
 		this.update();
-		if (this.done == 0) {
+		if (!(this.running)) {
 			freezeControl = false;
 		}
-		return this.done;
+		return this.running;
 	}
 }
 
@@ -155,10 +155,10 @@ class ClearAnim extends Anim {
 		}
 		
 		this.update();
-		if (this.done == 0) {
+		if (!(this.running)) {
 			freezeControl = false;
 		}
-		return this.done;
+		return this.running;
 	}
 }
 
@@ -186,13 +186,26 @@ class AnimQueue {
 	}
 }
 
-class Delay {
-	constructor(duration) {
+class Delay extends Anim {
+	constructor(duration, needToFreeze = false) {
+		super();
 		this.delay = duration;
+		this.animDuration = duration;
+		
+		if (needToFreeze) {
+			this.freezing = true;
+			freezeControl = true;
+		} else {
+			this.freezing = false;
+		}
 	}
 	
 	render() {
-		return 0;
+		this.update();
+		if (this.freezing && !(this.running)) {
+			freezeControl = false;
+		}
+		return this.running;
 	}
 }
 

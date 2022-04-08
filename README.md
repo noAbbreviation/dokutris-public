@@ -1,21 +1,36 @@
 # DokuTris
 A clone of [Woodoku by Tripledot Studios](https://play.google.com/store/apps/details?id=com.tripledot.woodoku) using the [p5.js library.](https://https://p5js.org/)
 
+![start_game](https://user-images.githubusercontent.com/46922184/162483739-fcb8d891-8733-4b83-a706-89a55d659d99.png)
 
-_(Images do not reflect current skin)_
-![image](https://user-images.githubusercontent.com/46922184/160233864-77d311ad-7e44-4be4-8275-41bd89244f76.png)
+## Release Notes
+### stable v1.01
+Main changes:
+- Added Menus and fixed/added UI elements
+- Can now save stats and overall stats for progression
+- Bag system implemented to reduce RNG
+- Touchscreen devices can now use the app
+
+Minor changes:
+- S/Z and J/L pieces now show in all variations
+- Start screen color for defaultSkin is now a better color. Sorry about that!
+
+### stable v1
+- Base game established.
+
+## Mechanics
 
   As the name implies, it is a no-gravity, block-building game with Sudoku-esque rules. 
 In this game, you place pieces and clear spaces to get points. You lose when you can't fit the given pieces to the board.
 The clears in this game are the things that you look for in Sudoku: vertical, horizontal, and blocks of 3-by-3's.
 
-![image](https://user-images.githubusercontent.com/46922184/160233887-04c2a842-7b09-4f29-b3c6-1d6df457b221.png)
+Unlike the block-stacking game, rotations are not allowed here.
 
 ## Placing blocks:
 - You select blocks by clicking to a insertable piece to a board. You can tell if a piece does not fit if it has a red outline.
 - You place blocks by moving your mouse to a location on the board. Then you click when the board highlights a piece.
 
-![image](https://user-images.githubusercontent.com/46922184/160233986-6c453be0-112b-44d4-93fb-3f29f75016bc.png)
+![placing_pieces](https://user-images.githubusercontent.com/46922184/162483826-60d33663-9517-4f32-82f9-ae4c9efe663e.png)
 
 
 ## Gaining points:
@@ -25,12 +40,10 @@ The clears in this game are the things that you look for in Sudoku: vertical, ho
 
 ![dafault_skin](https://user-images.githubusercontent.com/46922184/160288874-32810fa9-d525-4a6e-b41a-b529ebf86002.png)
 
-~~(This the default skin)~~ _(Points gained for placing the block: 1200 for the 4-Clear, 40 for the piece points)_
+ _(Points gained for placing the block: 1200 for the 4-Clear, 40 for the piece placement)_
 
-
-  In the current state, you can restart the game by clicking the gamescreen after the game over pops up (it's when the final score shows up).
   
 ## Opening the game
 To open the game, simply extract the .zip file when you (click the code button) -> (download the ZIP file). Then you open the index.html file using the browser of your choice.
 
-I'm pretty proud I did this. :smile:
+This is probably the last major update for this small web-app. Thank you for checking out this thing. I'm pretty proud I did this. :smile:

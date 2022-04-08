@@ -1,110 +1,124 @@
 function lookupPiece(pieceIndex) {
-	let variant1 = Math.floor(pieceIndex/4), variant2 = pieceIndex % 4;
+	let variant1 = divFloor(pieceIndex,4), variant2 = pieceIndex % 4;
 	let returnObj;
 	
 	switch (variant1) {
-		case 0: returnObj = moveSequence(5);
-			break;
+		case 0: returnObj = moveSequence(5); 
+			break; // dot
 		
-		case 1: returnObj = (variant2 % 2) ? (moveSequence(5,6)) : (moveSequence(5,8));
-			break;
+		case 1: returnObj = (divFloor(variant2,2) == 1) ? (moveSequence(5,6)) : (moveSequence(5,8));
+			break; // 2-line
 		
-		case 2: returnObj = (variant2 % 2) ? (moveSequence(5,6,6)) : (moveSequence(5,8,8));
-			break;
+		case 2: returnObj = (divFloor(variant2,2) == 1) ? (moveSequence(5,6,6)) : (moveSequence(5,8,8));
+			break; // 3-line
 		
 		case 3:
-		if (variant2 == 0) {
-			returnObj = moveSequence(5,2,4);
-		} else if (variant2 == 1) {
-			returnObj = moveSequence(5,2,6);
-		} else if (variant2 == 2) {
-			returnObj = moveSequence(5,8,4);
-		} else {
-			returnObj = moveSequence(5,8,6);
-		}
-			break;
+			if (variant2 == 0) {
+				returnObj = moveSequence(5,2,4);
+			} else if (variant2 == 1) {
+				returnObj = moveSequence(5,2,6);
+			} else if (variant2 == 2) {
+				returnObj = moveSequence(5,8,4);
+			} else {
+				returnObj = moveSequence(5,8,6);
+			}
+			break; // elbow
 		
 		case 4: returnObj = moveSequence(5,6,8,4);
-			break;
+			break; // ball
 		
-		case 5: returnObj = (variant2 % 2) ? (moveSequence(5,6,6,6)) : (moveSequence(5,8,8,8));
-			break;
+		case 5: returnObj = (divFloor(variant2,2) == 1) ? (moveSequence(5,6,6,6)) : (moveSequence(5,8,8,8));
+			break; // 4-line
 		
 		case 6:
-		if (variant2 == 0) {
-			returnObj = moveSequence(5,2,4,4);
-		} else if (variant2 == 1) {
-			returnObj = moveSequence(5,2,6,6);
-		} else if (variant2 == 2) {
-			returnObj = moveSequence(5,8,4,4);
-		} else {
-			returnObj = moveSequence(5,8,6,6);
-		}
-			break;
+			if (variant2 == 0) {
+				returnObj = moveSequence(5,4,4,2);
+			} else if (variant2 == 1) {
+				returnObj = moveSequence(5,6,6,2);
+			} else if (variant2 == 2) {
+				returnObj = moveSequence(5,4,4,8);
+			} else if (variant2 == 3) {
+				returnObj = moveSequence(5,6,6,8);
+			}
+			break; // lj-horizontal
 		
-		case 7:
-		if (variant2 == 0) {
-			returnObj = moveSequence(5,1,6,6);
-		} else if (variant2 == 1) {
-			returnObj = moveSequence(5,3,8,8);
-		} else if (variant2 == 2) {
-			returnObj = moveSequence(5,7,6,6);
-		} else {
-			returnObj = moveSequence(5,1,8,8);
-		}
-			break;
+		case 7: 
+			if (variant2 == 0) {
+				returnObj = moveSequence(5,2,2,4);
+			} else if (variant2 == 1) {
+				returnObj = moveSequence(5,2,2,6);
+			} else if (variant2 == 2) {
+				returnObj = moveSequence(5,8,8,4);
+			} else {
+				returnObj = moveSequence(5,8,8,6);
+			}
+			break; // lj-vertical
 		
 		case 8:
-		if (variant2 == 0) {
-			returnObj = moveSequence(5,2,4,2);
-		} else if (variant2 == 1) {
-			returnObj = moveSequence(5,2,6,2);
-		} else if (variant2 == 2) {
-			returnObj = moveSequence(5,8,4,8);
-		} else {
-			returnObj = moveSequence(5,8,6,8);
-		}
-			break;
+			if (variant2 == 0) {
+				returnObj = moveSequence(5,1,6,6);
+			} else if (variant2 == 1) {
+				returnObj = moveSequence(5,3,8,8);
+			} else if (variant2 == 2) {
+				returnObj = moveSequence(5,9,4,4);
+			} else {
+				returnObj = moveSequence(5,7,2,2);
+			}
+			break; // t piece
 		
 		case 9:
-		if (variant2 == 0) {
-			returnObj = moveSequence(5,2,2,4,4);
-		} else if (variant2 == 1) {
-			returnObj = moveSequence(5,2,2,6,6);
-		} else if (variant2 == 2) {
-			returnObj = moveSequence(5,8,8,4,4);
-		} else {
-			returnObj = moveSequence(5,8,8,6,6);
-		}
-			break;
+			if (variant2 == 0) {
+				returnObj = moveSequence(5,2,4,2);
+			} else if (variant2 == 1) {
+				returnObj = moveSequence(5,2,6,2);
+			} else if (variant2 == 2) {
+				returnObj = moveSequence(5,6,2,6);
+			} else {
+				returnObj = moveSequence(5,6,8,6);
+			}
+			break; // sz piece
 		
 		case 10:
-		if (variant2 == 0) {
-			returnObj = moveSequence(5,2,1,6,6);
-		} else if (variant2 == 1) {
-			returnObj = moveSequence(5,6,3,8,8);
-		} else if (variant2 == 2) {
-			returnObj = moveSequence(5,8,7,6,6);
-		} else {
-			returnObj = moveSequence(5,4,1,8,8);
-		}
-			break;
+			if (variant2 == 0) {
+				returnObj = moveSequence(5,2,2,4,4);
+			} else if (variant2 == 1) {
+				returnObj = moveSequence(5,2,2,6,6);
+			} else if (variant2 == 2) {
+				returnObj = moveSequence(5,8,8,4,4);
+			} else {
+				returnObj = moveSequence(5,8,8,6,6);
+			}
+			break; // big elbow
 		
-		case 11: returnObj = moveSequence(5,2,9,7,1);
-			break;
+		case 11:
+			if (variant2 == 0) {
+				returnObj = moveSequence(5,2,1,6,6);
+			} else if (variant2 == 1) {
+				returnObj = moveSequence(5,6,3,8,8);
+			} else if (variant2 == 2) {
+				returnObj = moveSequence(5,8,7,6,6);
+			} else {
+				returnObj = moveSequence(5,4,1,8,8);
+			}
+			break; // big t piece
 		
-		case 12: returnObj = (variant2 % 2) ? (moveSequence(5,6,6,6,6)) : (moveSequence(5,8,8,8,8));
-			break;
+		case 12: returnObj = moveSequence(5,2,9,7,1);
+			break; // cross piece
 		
-		case 13: returnObj = (variant2 % 2) ? (moveSequence(5,9,9)) : (moveSequence(5,7,7));
-			break;
+		case 13: returnObj = (divFloor(variant2,2) == 1) ? (moveSequence(5,6,6,6,6)) : (moveSequence(5,8,8,8,8));
+			break; // 5-line
+		
+		case 14: returnObj = (divFloor(variant2,2) == 1) ? (moveSequence(5,9,9)) : (moveSequence(5,7,7));
+			break; // diagonal piece
+			
+		default: console.error("Invalid pieceIndex", pieceIndex);
 	}
 	
 	return returnObj;
 }
 
 function moveCoord(coordObj, variant=5) {
-	// This movement system is inspired by a numpad.
+	// This movement system is inspired by the numpad.
 	let pMove = 0, lMove = 0; // p as in portrait, l as in landscape
 	let temp = {x:0, y:0};
 	
@@ -135,6 +149,21 @@ function moveSequence(...movementArr) {
 	}
 	
 	return storageMovementArr;
+}
+
+function lookupDistrib(index) {
+	let onePiece = [0], twoPiece = [1], threePiece = [2,3],
+		fourPiece = [4,5,6,7,8,9], fivePiece = [10,11,12,13],
+		diagPiece = [14];
+	
+	let table = onePiece.concat(onePiece).concat(onePiece).concat(onePiece); // 4
+		table = table.concat(twoPiece).concat(twoPiece).concat(twoPiece); // 3
+		table = table.concat(threePiece).concat(threePiece); // 2
+		table = table.concat(fourPiece); // 1
+		table = table.concat(fivePiece).concat(fivePiece); // 2
+		table = table.concat(diagPiece); // 1
+	
+	return table[index];
 }
 
  // Super duper prototype scores

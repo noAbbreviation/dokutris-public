@@ -5,8 +5,9 @@ const officeColor = { // Probably not correct terms
 	beige: "#c4b49b",
 	green: "#7cd957",
 	gray: 50,
+	gold: "#ffd500",
 	
-	neutral: "#fbe49a", // Light-ish pink
+	neutral: "#fcf0ca", // Light-ish pink
 	
 	tone: "#fdfb5b", // Light-ish yellow
 	accent: "#ff6565" // Light-ish red
@@ -23,16 +24,65 @@ const OfficeSkin = {
 		stroke: officeColor.gray,
 		text: {
 			title_color: officeColor.accent,
-			subtitle_color: officeColor.green
+			subtitle_color: officeColor.green,
+			button_color: officeColor.white
+		},
+		
+		statsButton: {
+			color: officeColor.gold,
+			stroke: officeColor.gray
+		},
+		playButton: {
+			color: officeColor.green,
+			stroke: officeColor.gray
+		}
+	},
+	
+	continuePopup: {
+		color: officeColor.tone,
+		stroke: officeColor.gray,
+		text: {
+			color: officeColor.green,
+			stroke: officeColor.gray
+		},
+		
+		button_text_color: officeColor.white,
+		contButton: {
+			color: officeColor.green,
+			stroke: officeColor.gray
+		},
+		restartButton: {
+			color: officeColor.accent,
+			stroke: officeColor.gray
 		}
 	},
 	
 	endScreen: {
 		color: officeColor.tone,
 		stroke: officeColor.beige,
-		text: {
+		score_text: {
 			color: officeColor.green,
 			stroke: officeColor.black
+		},
+		hs_text: {
+			color: officeColor.white,
+			stroke: officeColor.gray,
+			stroke_weight: 4,
+		},
+		
+		button_text_color: officeColor.tone,
+		statsButton: {
+			color: officeColor.green,
+			stroke: officeColor.gray
+		},
+		restartButton: {
+			color: officeColor.accent,
+			stroke: officeColor.gray
+		},
+		
+		backButton: {
+			color: officeColor.green,
+			stroke: officeColor.gray
 		}
 	},
 	
@@ -75,9 +125,22 @@ const OfficeSkin = {
 	},
 	
 	animColor: {
-		gold: "#ffd500",
+		gold: officeColor.gold,
 		green: officeColor.green,
 		stroke: officeColor.black
+	},
+	
+	overallScreen: {
+		fill: officeColor.tone,
+		stroke: officeColor.black,
+		title_text_color: officeColor.green,
+		stats_text_color: officeColor.white,
+		gold: officeColor.gold,
+		button: {
+			fill: officeColor.green,
+			stroke: officeColor.black,
+			color: officeColor.tone
+		}
 	},
 	
 	unCover_color: officeColor.gray

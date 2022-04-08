@@ -147,9 +147,10 @@ class Pointer {
 			
 			if (selected != -1) { // Maybe remove cond later?
 				if (placePiece(pointerX,pointerY,pieces[selected]) == 0) {
+					let holding = pieces[selected].objIndex;
 					dokuClearCheck(board);
-					stats.piecePlaced(pieces[selected].objIndex);
 					pieces[selected].changeHold(-1);
+					stats.piecePlaced(holding);
 				}
 				this.updateState("NORMAL");
 				pieces[selected].updateState("NORMAL");
@@ -166,7 +167,7 @@ class Pointer {
 			
 			if (isSidebarEmpty) {
 				for (let i=0; i<pieces.length; i++) { // Refills the board
-					pieces[i].changeHold(randToMax(4*14-1));
+					pieces[i].changeHold(pullFromBag());
 				}
 			}
 			
@@ -185,26 +186,29 @@ class Pointer {
 			if (gameEnd) {
 				stats.gameEnd();
 			}
+			cache.upload();
 		}
 	}
 	
-	sidebarClick(index) { // In every pieceReload, check if pieces fit
-		if (this.state == "NORMAL" && pieces[index].state != "NOT_FIT" && pieces[index].objIndex != -1) {
-			this.updateState("SELECT");
-			pieces[index].updateState("SELECT");
-			this.toggleSelection();
-			
-		} else if (this.state == "SELECT" && pieces[index].state != "NOT_FIT") {
-			let selected = findSelected();
-			
-			if (selected == index) { // Clicked the selected
-				this.updateState("NORMAL");
-				pieces[selected].updateState("NORMAL"); 
-				this.toggleSelection();
-			} else if (pieces[selected].objIndex != -1) {
-				 // Swaps states
+	sidebarClick(index) {
+		if (!(pieces[index].state == "NOT_FIT" || pieces[index].objIndex == -1)) {
+			if (this.state == "NORMAL") {
+				this.updateState("SELECT");
 				pieces[index].updateState("SELECT");
-				pieces[selected].updateState("NORMAL");
+				this.toggleSelection();
+				
+			} else if (this.state == "SELECT") {
+				let selected = findSelected();
+				
+				if (selected == index) { // Clicked the selected
+					this.updateState("NORMAL");
+					pieces[selected].updateState("NORMAL"); 
+					this.toggleSelection();
+				} else if (pieces[selected].objIndex != -1) {
+					 // Swaps states
+					pieces[index].updateState("SELECT");
+					pieces[selected].updateState("NORMAL");
+				}
 			}
 		}
 	}

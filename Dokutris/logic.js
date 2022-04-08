@@ -12,24 +12,62 @@ function initGame() {
 		}
 	}
 	
+	refillMainBag();
+	refillMiniBag();
+	
 	for (let i=0; i<pieces.length; i++) {
 		pieces[i] = new pieceHolder(0,i);
-		pieces[i].changeHold(randToMax(4*13-1));
+		pieces[i].changeHold(pullFromBag());
 		
 		redPiece[i] = new highlightHolder(0,i);
 		highlightPiece[i] = new highlightHolder(0,i);
 	}
-	scoreBoard = new ScoreBoard();
 	
-	pointer = new Pointer();
+	scoreBoard = new ScoreBoard();
 	stats = new Stats();
+	appState = PLAYING;
+	
+	if (!(cache.fresh)) {
+		if (cache.getObj('stats').score.total > 0 && cache.getObj('appState') == PLAYING) {
+			continueGame();
+		}
+	}
 	
 	animHolder = new animationHolder();
 	animQueue = new AnimQueue();
 	animQueue.addSequence(new unCover());
 	
-	appState = PLAYING;
 	loop();
+}
+
+function continueGame() {
+	
+	let boardShell = cache.getObj('board'),
+		piecesShell = cache.getObj('pieces'),
+		statsShell = cache.getObj('stats'),
+		mainBagShell = cache.getObj('mainBag'),
+		miniBagShell = cache.getObj('miniBag');
+	
+	for (let i=0; i<board.length; i++) {
+		for (let j=0; j<board[0].length; j++) {
+			board[i][j].updateState(boardShell[i][j].state);
+		}
+	}
+	clearHighlight();
+	
+	for (let i=0; i<pieces.length; i++) {
+		pieces[i].changeHold(piecesShell[i].objIndex);
+		pieces[i].updateState(piecesShell[i].state);
+	}
+	
+	for (let statsProp in statsShell) {
+		stats[statsProp] = statsShell[statsProp];
+	}
+	
+	mainBag = mainBagShell;
+	miniBag = miniBagShell;
+	
+	appState = CONT_POPUP;
 }
 
 function restart() {
@@ -41,7 +79,7 @@ function restart() {
 	}
 	
 	for (let i=0; i<pieces.length; i++) {
-		pieces[i].changeHold(randToMax(4*13-1));
+		pieces[i].changeHold(pullFromBag());
 		pieces[i].updateState("NORMAL");
 	}
 	
@@ -50,6 +88,41 @@ function restart() {
 	stats.restart();
 	appState = PLAYING;
 	loop();
+}
+
+function pullFromBag() {
+	
+	let random1 = randToMax(miniBag.length - 1),
+		variant1 = miniBag[random1],
+		random2 = randToMax(mainBag[random1].array.length - 1),
+		variant2 = mainBag[random1].array[random2];
+	
+	miniBag.splice(random1,1);
+	if (mainBag[random1].array.length == 0) {
+		mainBag.splice(random1,1);
+	}
+	
+	if (mainBag.length == 0) {
+		refillMainBag();
+	}
+	
+	if (miniBag.length == 0) {
+		refillMiniBag();
+	}
+	
+	return (4*variant1 + variant2);
+}
+
+function refillMainBag() {
+	for (let i=0; i<numPieces; i++) {
+		mainBag[i] = { index: lookupDistrib(i), array:[0,1,2,3]};
+	}
+}
+
+function refillMiniBag() {
+	for (let i=0; i<numPieces; i++) {
+		miniBag[i] = lookupDistrib(i);
+	}
 }
 
 function dokuClearCheck(boardState) {
@@ -88,7 +161,7 @@ function dokuClearCheck(boardState) {
 	 // Block checks
 	for (let i=0; i<9; i++) {
 		isCleared = true;
-		let blockX = i % 3, blockY = Math.floor(i/3);
+		let blockX = i % 3, blockY = divFloor(i,3);
 		
 		for (let a=0; a<3; a++) {
 			for (let b=0; b<3; b++) {
@@ -131,7 +204,7 @@ function initDokuClear(clearsArr) {
 			case "block":
 				for (let a=0; a<3; a++) {
 					for (let b=0; b<3; b++) {
-						board[3 * (index%3) + a][3 * Math.floor(index/3) + b].updateState("NORMAL");
+						board[3 * (index%3) + a][3 * divFloor(index,3) + b].updateState("NORMAL");
 					}
 				}
 		}
@@ -155,20 +228,20 @@ function placePiece(pointerX, pointerY, holderObj) {
 }
 
 function inBounds(index,pointerX,pointerY) {
-	let objectCoords = lookupPiece(index), inside = true;
+	let objectCoords = lookupPiece(index), isInside = true;
 	
 	for (let i=0; i<objectCoords.length; i++) {
 		if (!(new jsLibComparison(objectCoords[i].x + pointerX).inBetween(0,9,10) && new jsLibComparison(objectCoords[i].y + pointerY).inBetween(0,9,10))) {
-			inside = false;
+			isInside = false;
 			break;
 		}
 		
 		if (board[objectCoords[i].x + pointerX][objectCoords[i].y + pointerY].state == "FILL") {
-			inside = false;
+			isInside = false;
 			break;
 		}
 	}
-	return inside;
+	return isInside;
 }
 
 function inField() {
@@ -191,4 +264,12 @@ function findSelected() { // In sidebar, pieceHolders
 	}
 	
 	return -1;
+}
+
+function clearHighlight() {
+	for (let i=0; i<9; i++) {
+		for (let j=0; j<9; j++) {
+			highlightBoard[i][j].updateState("NOT_SELECT");
+		}
+	}
 }

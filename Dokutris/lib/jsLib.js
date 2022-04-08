@@ -4,17 +4,26 @@ function randToMax(num = 0) { // Assumes num is an integer
 	return Math.floor(Math.random() * (num + 1));
 }
 
+function divFloor(num, dividend) {
+	return Math.floor(num/dividend);
+}
+
 class jsLibComparison {
 	constructor(num) {
 		this.num = num;
 	}
 	
 	inBetween(lowerBound = 0, upperBound = 0, state = 0) {
-		/* The states are as follows: 
-		   (lower, upper) - state 00 (or 0)
-		   [lower, upper) - state 10
-		   (lower, upper] - state 01 (or 1)
-		   [lower, upper] - state 11
+		/*  The states are as follows: 
+			(lower, upper) - state 00 (please use 0)
+			[lower, upper) - state 10
+			(lower, upper] - state 01 (please use 1)
+			[lower, upper] - state 11
+			
+			0number is interpreted as an octal,
+				which causes some problems in the function.
+		
+			Sorry for the inconvience.
 		*/
 		
 		let lowerParenthesis = (this.num > lowerBound),
@@ -23,7 +32,8 @@ class jsLibComparison {
 			upperBracket =     (this.num <= upperBound);
 		
 		switch (state) {
-			default: return false;
+			default: console.warn('Please refer to function for correct input of bounds');
+				return false;
 			
 			 case 0: return (lowerParenthesis && upperParenthesis);
 				
